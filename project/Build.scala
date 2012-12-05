@@ -3,6 +3,6 @@ import Keys._
 
 object FabBuild extends Build {
   lazy val FabProject = Project("Fab", file(".")).settings(
-    scalaVersion := "2.10-RC3"
+    scalaVersion := "2.10.0-RC3"
   )
 }
