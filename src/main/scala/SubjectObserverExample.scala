@@ -1,6 +1,8 @@
 trait SubjectObserver[F <: SubjectObserver[F]]
-  extends Fab2[F, Subject[F], Observer[F]] {
+  extends Fab2[F, Subject[F], Observer[F]] with FabR1[F, Subject[F]] with FabR2[F, Observer[F]] {
   self: F =>
+  type M1 <: Subject[F]
+  type M2 <: Observer[F]
 }
 
 trait Subject[F <: SubjectObserver[F]] extends FabM1[F, Subject[F]] {
@@ -9,19 +11,17 @@ trait Subject[F <: SubjectObserver[F]] extends FabM1[F, Subject[F]] {
   def subscribe(obs:F#M2) = 
     observers = obs :: observers
   def publish = 
-    for (obs <- observers) obs.notify(this:F#M1)
+    for (obs <- observers) obs.notify(this)
 }
 trait Observer[F <: SubjectObserver[F]] extends FabM2[F, Observer[F]] {
   self: F#M2 =>
   def notify(sub:F#M1):Unit
 }
-
-trait SensorReader extends SubjectObserver[SensorReader]
-  with Fab2[SensorReader, Sensor, Display] {
+trait SensorReader extends SubjectObserver[SensorReader] with Fab2[SensorReader, Sensor, Display] {
   type M1 = Sensor
   type M2 = Display
 }
-trait Sensor extends Subject[SensorReader] {
+trait Sensor extends Subject[SensorReader] with FabM1[SensorReader, Sensor] {
   val label:String
   var value:Double = 0.0
   def changeValue(v:Double) = {
@@ -29,7 +29,7 @@ trait Sensor extends Subject[SensorReader] {
     publish
   }
 }
-class Display extends Observer[SensorReader] {
+class Display extends Observer[SensorReader] with FabM2[SensorReader, Display] {
   def printlnZ(s:String) = println(s:String)
   def notify(sub:Sensor) =
     printlnZ(sub.label + " has value " + sub.value)
