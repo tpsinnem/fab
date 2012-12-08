@@ -9,6 +9,7 @@ Here are the traits, larger arities probably to come. I haven't used Scala macro
 but if there'd be some nice way of using them to create these automatically, clues 
 are welcome.
 
+```scala
 trait Fab2[+F <: Fab2[F,M1,M2], +M1 <: FabM1[F,M1], +M2 <: FabM2[F,M2]] extends FabR1[F, M1] with FabR2[F, M2] {
   self: F =>
 }
@@ -26,12 +27,13 @@ trait FabM1[+F <: FabR1[F,M], +M <: FabM1[F,M]] {
 trait FabM2[+F <: FabR2[F,M], +M <: FabM2[F,M]] {
   self: F#M2 =>
 }
+```
 
 -------------------------------------
 
 An example, adapted from Martin Odersky's well-known Cake pattern example:
 
-
+```scala
 trait SubjectObserver[F <: SubjectObserver[F]]
   extends Fab2[F, Subject[F], Observer[F]] with FabR1[F, Subject[F]] with FabR2[F, Observer[F]] {
   self: F =>
@@ -77,5 +79,5 @@ object Test {
     s1.changeValue(2); s2.changeValue(3)
   }
 }
-
+```
 
