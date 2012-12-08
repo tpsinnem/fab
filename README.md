@@ -5,7 +5,7 @@ An attempt at F-bounded family polymorphism
 
 ---------------------------------
 
-Here are the traits, larger arities probably to come. I haven't used Scala macros yet, 
+Here are the traits; larger arities probably to come. I haven't used Scala macros yet, 
 but if there'd be some nice way of using them to create these automatically, clues 
 are welcome.
 
